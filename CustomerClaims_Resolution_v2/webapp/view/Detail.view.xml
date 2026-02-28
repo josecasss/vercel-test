@@ -1,0 +1,318 @@
+<mvc:View
+    controllerName="com.prototype.claims.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:uxap="sap.uxap"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <Page showHeader="false">
+        <content>
+
+            <!-- ═══════════════════════════════════════════════════════════
+                 REAL SAP FIORI OBJECT PAGE  (sap.uxap.ObjectPageLayout)
+                 ═══════════════════════════════════════════════════════════ -->
+            <uxap:ObjectPageLayout
+                id="objectPageLayout"
+                alwaysShowContentHeader="false"
+                preserveHeaderStateOnScroll="false"
+                useIconTabBar="true"
+                upperCaseAnchorBar="false"
+                showTitleInHeaderContent="true">
+
+                <!-- ════ DYNAMIC HEADER TITLE ════════════════════════════ -->
+                <uxap:headerTitle>
+                    <uxap:ObjectPageDynamicHeaderTitle>
+
+                        <!-- Back button -->
+                        <uxap:navigationActions>
+                            <Button
+                                icon="sap-icon://nav-back"
+                                tooltip="Back to List"
+                                press="onNavBack"
+                                type="Transparent" />
+                        </uxap:navigationActions>
+
+                        <!-- Expanded: Avatar + Title + Subtitle -->
+                        <uxap:expandedHeading>
+                            <HBox alignItems="Center">
+                                <f:Avatar
+                                    initials="{= ${/selectedItem/Priority} === '01' ? 'HP' : (${/selectedItem/Priority} === '02' ? 'MP' : 'LP') }"
+                                    backgroundColor="{= ${/selectedItem/Priority} === '01' ? 'Accent1' : (${/selectedItem/Priority} === '02' ? 'Accent3' : 'Accent6') }"
+                                    displaySize="L"
+                                    displayShape="Square"
+                                    class="sapUiSmallMarginEnd" />
+                                <VBox justifyContent="Center">
+                                    <Title text="{/selectedItem/ClaimID}" level="H2" wrapping="true" />
+                                    <Text
+                                        text="{/selectedItem/CustomerName}"
+                                        class="sapUiTinyMarginTop"
+                                        style="color: var(--sapContent_LabelColor)" />
+                                </VBox>
+                            </HBox>
+                        </uxap:expandedHeading>
+
+                        <!-- Snapped: compact when user scrolls down -->
+                        <uxap:snappedHeading>
+                            <HBox alignItems="Center">
+                                <f:Avatar
+                                    initials="{= ${/selectedItem/Priority} === '01' ? 'HP' : (${/selectedItem/Priority} === '02' ? 'MP' : 'LP') }"
+                                    backgroundColor="{= ${/selectedItem/Priority} === '01' ? 'Accent1' : (${/selectedItem/Priority} === '02' ? 'Accent3' : 'Accent6') }"
+                                    displaySize="XS"
+                                    displayShape="Square"
+                                    class="sapUiSmallMarginEnd" />
+                                <VBox>
+                                    <Title text="{/selectedItem/ClaimID}" level="H4" />
+                                    <Text text="{/selectedItem/CustomerName}" />
+                                </VBox>
+                            </HBox>
+                        </uxap:snappedHeading>
+
+                        <!-- Header Action Buttons -->
+                        <uxap:actions>
+                            <OverflowToolbarButton
+                                icon="sap-icon://share-2"
+                                text="Share"
+                                type="Transparent" />
+                            <Button text="Edit" icon="sap-icon://edit" type="Ghost" />
+                            <Button text="Process Claim" icon="sap-icon://complete" type="Emphasized" />
+                        </uxap:actions>
+
+                        <!-- Expanded header content: key KPIs -->
+                        <uxap:expandedContent>
+                            <HBox wrap="Wrap" class="sapUiSmallMarginTop sapUiSmallMarginBottom">
+
+                                <VBox class="sapUiMediumMarginEnd">
+                                    <Label text="Claim Category" design="Bold" />
+                                    <HBox alignItems="Center" class="sapUiTinyMarginTop">
+                                        <core:Icon
+                                            src="sap-icon://tag"
+                                            size="0.875rem"
+                                            color="var(--sapContent_LabelColor)"
+                                            class="sapUiTinyMarginEnd" />
+                                        <Text text="{/selectedItem/ClaimCategory}" />
+                                    </HBox>
+                                </VBox>
+
+                                <VBox class="sapUiMediumMarginEnd">
+                                    <Label text="Priority" design="Bold" />
+                                    <ObjectStatus
+                                        text="{/selectedItem/PriorityText}"
+                                        state="{= ${/selectedItem/Priority} === '01' ? 'Error' : (${/selectedItem/Priority} === '02' ? 'Warning' : 'None') }"
+                                        icon="{= ${/selectedItem/Priority} === '01' ? 'sap-icon://status-critical' : (${/selectedItem/Priority} === '02' ? 'sap-icon://status-in-process' : 'sap-icon://status-positive') }"
+                                        class="sapUiTinyMarginTop" />
+                                </VBox>
+
+                                <VBox class="sapUiMediumMarginEnd">
+                                    <Label text="Critical Issue" design="Bold" />
+                                    <ObjectStatus
+                                        text="{= ${/selectedItem/HasError} ? 'Yes' : 'No'}"
+                                        state="{= ${/selectedItem/HasError} ? 'Error' : 'Success'}"
+                                        icon="{= ${/selectedItem/HasError} ? 'sap-icon://alert' : 'sap-icon://sys-enter-2'}"
+                                        class="sapUiTinyMarginTop" />
+                                </VBox>
+
+                                <VBox class="sapUiMediumMarginEnd">
+                                    <Label text="Claim Date" design="Bold" />
+                                    <HBox alignItems="Center" class="sapUiTinyMarginTop">
+                                        <core:Icon
+                                            src="sap-icon://appointment-2"
+                                            size="0.875rem"
+                                            color="var(--sapContent_LabelColor)"
+                                            class="sapUiTinyMarginEnd" />
+                                        <Text text="{/selectedItem/DateFormatted}" />
+                                    </HBox>
+                                </VBox>
+
+                                <VBox>
+                                    <Label text="Ref. Invoice" design="Bold" />
+                                    <Link
+                                        text="{/selectedItem/ReferenceInvoice}"
+                                        class="sapUiTinyMarginTop" />
+                                </VBox>
+
+                            </HBox>
+                        </uxap:expandedContent>
+
+                        <!-- Snapped header content: minimal pills when scrolled -->
+                        <uxap:snappedContent>
+                            <HBox alignItems="Center" wrap="Wrap">
+                                <ObjectStatus
+                                    text="{/selectedItem/ClaimCategory}"
+                                    state="None"
+                                    icon="sap-icon://tag"
+                                    class="sapUiSmallMarginEnd" />
+                                <ObjectStatus
+                                    text="{/selectedItem/PriorityText}"
+                                    state="{= ${/selectedItem/Priority} === '01' ? 'Error' : (${/selectedItem/Priority} === '02' ? 'Warning' : 'None') }"
+                                    class="sapUiSmallMarginEnd" />
+                                <ObjectStatus
+                                    text="{= ${/selectedItem/HasError} ? 'Critical Issue' : 'No Issues'}"
+                                    state="{= ${/selectedItem/HasError} ? 'Error' : 'Success'}"
+                                    icon="{= ${/selectedItem/HasError} ? 'sap-icon://alert' : 'sap-icon://sys-enter-2'}" />
+                            </HBox>
+                        </uxap:snappedContent>
+
+                    </uxap:ObjectPageDynamicHeaderTitle>
+                </uxap:headerTitle>
+
+                <!-- ════ SECTIONS ═════════════════════════════════════════ -->
+                <uxap:sections>
+
+                    <!-- ── SECTION 1: General Information ──────────────── -->
+                    <uxap:ObjectPageSection title="General Information" titleUppercase="false">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection title="Claim Reference">
+                                <uxap:blocks>
+                                    <form:SimpleForm
+                                        editable="false"
+                                        layout="ResponsiveGridLayout"
+                                        labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+                                        adjustLabelSpan="false"
+                                        columnsXL="3" columnsL="2" columnsM="1">
+                                        <form:content>
+                                            <Label text="Claim ID" />
+                                            <HBox alignItems="Center">
+                                                <core:Icon
+                                                    src="sap-icon://document"
+                                                    class="sapUiTinyMarginEnd"
+                                                    color="var(--sapNeutralColor)" />
+                                                <Text text="{/selectedItem/ClaimID}" />
+                                            </HBox>
+
+                                            <Label text="Reference Invoice" />
+                                            <Link text="{/selectedItem/ReferenceInvoice}" />
+
+                                            <Label text="Claim Date" />
+                                            <Text text="{/selectedItem/DateFormatted}" />
+
+                                            <Label text="Claim Category" />
+                                            <Text text="{/selectedItem/ClaimCategory}" />
+
+                                            <Label text="Priority" />
+                                            <ObjectStatus
+                                                text="{/selectedItem/PriorityText}"
+                                                state="{= ${/selectedItem/Priority} === '01' ? 'Error' : (${/selectedItem/Priority} === '02' ? 'Warning' : 'None') }"
+                                                icon="{= ${/selectedItem/Priority} === '01' ? 'sap-icon://status-critical' : (${/selectedItem/Priority} === '02' ? 'sap-icon://status-in-process' : 'sap-icon://status-positive') }" />
+                                        </form:content>
+                                    </form:SimpleForm>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+
+                    <!-- ── SECTION 2: Customer & Organization ──────────── -->
+                    <uxap:ObjectPageSection title="Customer &amp; Organization" titleUppercase="false">
+                        <uxap:subSections>
+
+                            <uxap:ObjectPageSubSection title="Sales Organization">
+                                <uxap:blocks>
+                                    <form:SimpleForm
+                                        editable="false"
+                                        layout="ResponsiveGridLayout"
+                                        labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+                                        adjustLabelSpan="false"
+                                        columnsXL="2" columnsL="2" columnsM="1">
+                                        <form:content>
+                                            <Label text="Org. Code" />
+                                            <Text text="{/selectedItem/SalesOrg}" />
+
+                                            <Label text="Description" />
+                                            <Text text="{/selectedItem/SalesOrgDesc}" />
+                                        </form:content>
+                                    </form:SimpleForm>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+
+                            <uxap:ObjectPageSubSection title="Customer">
+                                <uxap:blocks>
+                                    <form:SimpleForm
+                                        editable="false"
+                                        layout="ResponsiveGridLayout"
+                                        labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+                                        adjustLabelSpan="false"
+                                        columnsXL="2" columnsL="2" columnsM="1">
+                                        <form:content>
+                                            <Label text="Customer Code" />
+                                            <Text text="{/selectedItem/CustomerCode}" />
+
+                                            <Label text="Customer Name" />
+                                            <Text text="{/selectedItem/CustomerName}" />
+                                        </form:content>
+                                    </form:SimpleForm>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+
+                    <!-- ── SECTION 3: Status & Resolution ─────────────── -->
+                    <uxap:ObjectPageSection title="Status &amp; Resolution" titleUppercase="false">
+                        <uxap:subSections>
+
+                            <uxap:ObjectPageSubSection title="Current Status">
+                                <uxap:blocks>
+                                    <form:SimpleForm
+                                        editable="false"
+                                        layout="ResponsiveGridLayout"
+                                        labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+                                        adjustLabelSpan="false"
+                                        columnsXL="2" columnsL="2" columnsM="1">
+                                        <form:content>
+                                            <Label text="Critical Issue" />
+                                            <ObjectStatus
+                                                text="{= ${/selectedItem/HasError} ? 'Yes – Critical Issue Detected' : 'No – No Issues Found'}"
+                                                state="{= ${/selectedItem/HasError} ? 'Error' : 'Success'}"
+                                                icon="{= ${/selectedItem/HasError} ? 'sap-icon://alert' : 'sap-icon://sys-enter-2'}" />
+
+                                            <Label text="Processing Status" />
+                                            <ObjectStatus
+                                                text="Open – Pending Resolution"
+                                                state="Warning"
+                                                icon="sap-icon://pending" />
+
+                                            <Label text="Assigned To" />
+                                            <HBox alignItems="Center">
+                                                <f:Avatar
+                                                    initials="SD"
+                                                    displaySize="XS"
+                                                    backgroundColor="Accent5"
+                                                    class="sapUiTinyMarginEnd" />
+                                                <Text text="Service Desk – Claims Team" />
+                                            </HBox>
+                                        </form:content>
+                                    </form:SimpleForm>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+
+                            <uxap:ObjectPageSubSection title="Resolution Notes">
+                                <uxap:blocks>
+                                    <VBox width="100%">
+                                        <MessageStrip
+                                            text="No resolution notes have been added yet. Click Edit to add notes."
+                                            type="Information"
+                                            showIcon="true"
+                                            showCloseButton="false"
+                                            class="sapUiSmallMarginBottom" />
+                                        <TextArea
+                                            placeholder="Enter resolution notes here..."
+                                            editable="false"
+                                            width="100%"
+                                            rows="5"
+                                            growing="true" />
+                                    </VBox>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+
+                </uxap:sections>
+
+            </uxap:ObjectPageLayout>
+
+        </content>
+    </Page>
+</mvc:View>

@@ -1,0 +1,178 @@
+<mvc:View
+    controllerName="com.prototype.claims.controller.List"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <Page title="{i18n>listTitle}" showHeader="true">
+        <content>
+
+            <!-- ═══ FILTER BAR ═══════════════════════════════════════════ -->
+            <Panel
+                headerText="Filters"
+                expandable="true"
+                expanded="true"
+                class="sapUiResponsiveMargin">
+                <content>
+                    <HBox
+                        alignItems="End"
+                        wrap="Wrap"
+                        class="sapUiSmallMargin">
+
+                        <!-- Sales Organization (Value Help) -->
+                        <VBox class="sapUiSmallMarginEnd" width="220px">
+                            <Label text="{i18n>filterSalesOrg}" design="Bold" />
+                            <Input
+                                id="salesOrgInput"
+                                value="{/filters/SalesOrgDisplay}"
+                                showValueHelp="true"
+                                valueHelpRequest="onSalesOrgValueHelp"
+                                showClearIcon="true"
+                                placeholder="Select Sales Org..."
+                                class="sapUiTinyMarginTop" />
+                        </VBox>
+
+                        <!-- Customer (Value Help) -->
+                        <VBox class="sapUiSmallMarginEnd" width="210px">
+                            <Label text="{i18n>filterCustomer}" design="Bold" />
+                            <Input
+                                id="customerInput"
+                                value="{/filters/CustomerDisplay}"
+                                showValueHelp="true"
+                                valueHelpRequest="onCustomerValueHelp"
+                                showClearIcon="true"
+                                placeholder="Select Customer..."
+                                class="sapUiTinyMarginTop" />
+                        </VBox>
+
+                        <!-- Claim ID (free text) -->
+                        <VBox class="sapUiSmallMarginEnd" width="190px">
+                            <Label text="{i18n>filterClaimID}" design="Bold" />
+                            <Input
+                                id="claimIDInput"
+                                value="{/filters/ClaimID}"
+                                showClearIcon="true"
+                                placeholder="e.g. CLM-9001"
+                                class="sapUiTinyMarginTop" />
+                        </VBox>
+
+                        <!-- High Priority Only (Switch) -->
+                        <VBox class="sapUiSmallMarginEnd" width="180px">
+                            <Label text="{i18n>filterHighPriority}" design="Bold" />
+                            <Switch
+                                state="{/filters/HighPriorityOnly}"
+                                class="sapUiTinyMarginTop" />
+                        </VBox>
+
+                        <!-- Go Button -->
+                        <VBox>
+                            <Label text="" />
+                            <Button
+                                text="{i18n>filterGo}"
+                                type="Emphasized"
+                                press="onSearch"
+                                class="sapUiTinyMarginTop" />
+                        </VBox>
+
+                    </HBox>
+                </content>
+            </Panel>
+
+            <!-- ═══ TABLE ═════════════════════════════════════════════════ -->
+            <Panel class="sapUiResponsiveMargin" expandable="false">
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="{/tableTitle}" level="H3" />
+                        <ToolbarSpacer />
+
+                        <!-- Primary Action -->
+                        <Button
+                            id="processClaimBtn"
+                            text="{i18n>btnProcessClaim}"
+                            type="Emphasized"
+                            enabled="{/hasSelection}"
+                            press="onProcessClaim" />
+
+                        <ToolbarSeparator />
+
+                        <!-- Standard Toolbar Icons (visual only) -->
+                        <OverflowToolbarButton
+                            icon="sap-icon://excel-attachment"
+                            tooltip="{i18n>btnExport}"
+                            type="Transparent" />
+                        <OverflowToolbarButton
+                            icon="sap-icon://action-settings"
+                            tooltip="{i18n>btnSettings}"
+                            type="Transparent" />
+                        <OverflowToolbarButton
+                            icon="sap-icon://sort"
+                            tooltip="{i18n>btnSort}"
+                            type="Transparent" />
+                        <OverflowToolbarButton
+                            icon="sap-icon://filter"
+                            tooltip="{i18n>btnFilter}"
+                            type="Transparent" />
+                        <OverflowToolbarButton
+                            icon="sap-icon://group-2"
+                            tooltip="{i18n>btnGroup}"
+                            type="Transparent" />
+                    </Toolbar>
+                </headerToolbar>
+
+                <Table
+                    id="claimsTable"
+                    items="{/displayItems}"
+                    noDataText="{i18n>tableNoData}"
+                    mode="MultiSelect"
+                    selectionChange="onSelectionChange"
+                    growing="true"
+                    growingThreshold="20">
+
+                    <columns>
+                        <Column width="120px">
+                            <Text text="{i18n>colClaimID}" />
+                        </Column>
+                        <Column>
+                            <Text text="{i18n>colCustomer}" />
+                        </Column>
+                        <Column width="130px">
+                            <Text text="{i18n>colSalesOrg}" />
+                        </Column>
+                        <Column width="130px" minScreenWidth="Tablet" demandPopin="true">
+                            <Text text="{i18n>colReferenceInvoice}" />
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true">
+                            <Text text="{i18n>colClaimCategory}" />
+                        </Column>
+                        <Column width="120px" hAlign="End">
+                            <Text text="{i18n>colDate}" />
+                        </Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem
+                            type="Navigation"
+                            press="onItemPress">
+                            <cells>
+                                <!-- Claim ID with priority highlight -->
+                                <ObjectStatus
+                                    text="{ClaimID}"
+                                    state="{= ${Priority} === '01' ? 'Error' : (${Priority} === '02' ? 'Warning' : 'None') }"
+                                    icon="{= ${Priority} === '01' ? 'sap-icon://status-critical' : '' }" />
+                                <Text text="{CustomerName}" />
+                                <Text text="{SalesOrg} – {SalesOrgDesc}" />
+                                <Text text="{ReferenceInvoice}" />
+                                <Text text="{ClaimCategory}" />
+                                <Text text="{DateFormatted}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+
+                </Table>
+            </Panel>
+
+        </content>
+    </Page>
+</mvc:View>
