@@ -1,0 +1,44 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Dialog
+        title="{i18n>createGRDialogTitle}"
+        type="Message"
+        contentWidth="400px">
+
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <Text
+                    text="{i18n>createGRDialogMessage}"
+                    class="sapUiSmallMarginBottom" />
+
+                <Label text="{i18n>createGRDateLabel}" design="Bold" class="sapUiSmallMarginTop" />
+                <DatePicker
+                    value="{
+                        path: '/createGRDate',
+                        type: 'sap.ui.model.type.Date',
+                        formatOptions: { pattern: 'dd.MM.yyyy' }
+                    }"
+                    displayFormat="dd.MM.yyyy"
+                    class="sapUiSmallMarginTop"
+                    width="100%" />
+            </VBox>
+        </content>
+
+        <beginButton>
+            <Button
+                text="{i18n>createGRConfirm}"
+                type="Emphasized"
+                press="onCreateGRConfirm" />
+        </beginButton>
+
+        <endButton>
+            <Button
+                text="{i18n>createGRCancel}"
+                press="onCreateGRCancel" />
+        </endButton>
+
+    </Dialog>
+
+</core:FragmentDefinition>

@@ -1,0 +1,174 @@
+<mvc:View
+    controllerName="com.prototype.goodsreceipt.controller.List"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <Page
+        title="{i18n>listTitle}"
+        showHeader="true">
+
+        <content>
+            <!-- Filter Bar Panel -->
+            <Panel
+                headerText="Filters"
+                expandable="true"
+                expanded="true"
+                class="sapUiResponsiveMargin">
+                <content>
+                    <l:HorizontalLayout
+                        class="sapUiSmallMargin">
+                        <HBox alignItems="End" wrap="Wrap">
+
+                            <!-- Plant Filter (Value Help) -->
+                            <VBox class="sapUiSmallMarginEnd" width="180px">
+                                <Label text="{i18n>filterPlant}" design="Bold" />
+                                <Input
+                                    id="plantFilterInput"
+                                    value="{/filters/PlantDisplay}"
+                                    showValueHelp="true"
+                                    valueHelpRequest="onPlantValueHelp"
+                                    showClearIcon="true"
+                                    placeholder="Select Plant..."
+                                    class="sapUiSmallMarginTop" />
+                            </VBox>
+
+                            <!-- Supplier Filter (Value Help) -->
+                            <VBox class="sapUiSmallMarginEnd" width="200px">
+                                <Label text="{i18n>filterSupplier}" design="Bold" />
+                                <Input
+                                    id="supplierFilterInput"
+                                    value="{/filters/SupplierDisplay}"
+                                    showValueHelp="true"
+                                    valueHelpRequest="onSupplierValueHelp"
+                                    showClearIcon="true"
+                                    placeholder="Select Supplier..."
+                                    class="sapUiSmallMarginTop" />
+                            </VBox>
+
+                            <!-- Purchase Order Filter (free text) -->
+                            <VBox class="sapUiSmallMarginEnd" width="200px">
+                                <Label text="{i18n>filterPurchaseOrder}" design="Bold" />
+                                <Input
+                                    id="purchaseOrderInput"
+                                    value="{/filters/PurchaseOrder}"
+                                    showClearIcon="true"
+                                    placeholder="Enter Purchase Order..."
+                                    class="sapUiSmallMarginTop" />
+                            </VBox>
+
+                            <!-- Only Without Errors Switch -->
+                            <VBox class="sapUiSmallMarginEnd" width="220px">
+                                <Label text="{i18n>filterOnlyWithoutErrors}" design="Bold" />
+                                <Switch
+                                    state="{/filters/OnlyWithoutErrors}"
+                                    class="sapUiSmallMarginTop" />
+                            </VBox>
+
+                            <!-- Go Button (aligned bottom) -->
+                            <VBox>
+                                <Label text="" />
+                                <Button
+                                    text="{i18n>filterGo}"
+                                    type="Emphasized"
+                                    press="onSearch"
+                                    class="sapUiSmallMarginTop" />
+                            </VBox>
+
+                        </HBox>
+                    </l:HorizontalLayout>
+                </content>
+            </Panel>
+
+            <!-- Table Panel -->
+            <Panel class="sapUiResponsiveMargin" expandable="false">
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="{/tableTitle}" level="H3" />
+                        <ToolbarSpacer />
+
+                        <!-- Create GR Action -->
+                        <Button
+                            id="createGRBtn"
+                            text="{i18n>btnCreateGR}"
+                            type="Emphasized"
+                            enabled="{= ${/hasSelection} === true}"
+                            press="onCreateGR" />
+
+                        <ToolbarSeparator />
+
+                        <!-- Standard toolbar icons (visual only) -->
+                        <OverflowToolbarButton
+                            icon="sap-icon://excel-attachment"
+                            tooltip="{i18n>btnExport}"
+                            type="Transparent" />
+                        <OverflowToolbarButton
+                            icon="sap-icon://action-settings"
+                            tooltip="{i18n>btnSettings}"
+                            type="Transparent" />
+                        <OverflowToolbarButton
+                            icon="sap-icon://sort"
+                            tooltip="{i18n>btnSort}"
+                            type="Transparent" />
+                        <OverflowToolbarButton
+                            icon="sap-icon://filter"
+                            tooltip="{i18n>btnFilter}"
+                            type="Transparent" />
+                        <OverflowToolbarButton
+                            icon="sap-icon://group-2"
+                            tooltip="{i18n>btnGroup}"
+                            type="Transparent" />
+                    </Toolbar>
+                </headerToolbar>
+
+                <Table
+                    id="poItemsTable"
+                    items="{/displayItems}"
+                    noDataText="{i18n>tableNoData}"
+                    mode="MultiSelect"
+                    selectionChange="onSelectionChange">
+
+                    <columns>
+                        <Column width="100px">
+                            <Text text="{i18n>colPlant}" />
+                        </Column>
+                        <Column width="150px">
+                            <Text text="{i18n>colSupplier}" />
+                        </Column>
+                        <Column width="150px">
+                            <Text text="{i18n>colPurchaseOrder}" />
+                        </Column>
+                        <Column width="120px">
+                            <Text text="{i18n>colDelivery}" />
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true">
+                            <Text text="{i18n>colMaterialDescription}" />
+                        </Column>
+                        <Column width="120px" hAlign="End">
+                            <Text text="{i18n>colDate}" />
+                        </Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem
+                            type="Navigation"
+                            press="onItemPress">
+                            <cells>
+                                <Text text="{Plant}" />
+                                <Text text="{Supplier}" />
+                                <Text text="{PurchaseOrder}" />
+                                <Text text="{Delivery}" />
+                                <Text text="{MaterialDescription}" />
+                                <Text text="{DateFormatted}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+
+                </Table>
+            </Panel>
+
+        </content>
+    </Page>
+</mvc:View>

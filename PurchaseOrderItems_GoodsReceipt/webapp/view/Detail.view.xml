@@ -1,0 +1,143 @@
+<mvc:View
+    controllerName="com.prototype.goodsreceipt.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <Page showHeader="false">
+        <content>
+            <f:DynamicPage id="detailPage" headerExpanded="true" toggleHeaderOnTitleClick="true">
+
+                <f:title>
+                    <f:DynamicPageTitle>
+                        <f:heading>
+                            <Title text="{/selectedItem/MaterialDescription}" level="H2" />
+                        </f:heading>
+                        <f:subheading>
+                            <Text text="Purchase Order: {/selectedItem/PurchaseOrder}" />
+                        </f:subheading>
+                        <f:actions>
+                            <Button text="{i18n>detailEdit}" icon="sap-icon://edit" type="Transparent" />
+                        </f:actions>
+                        <f:navigationActions>
+                            <Button
+                                icon="sap-icon://nav-back"
+                                tooltip="{i18n>detailBack}"
+                                press="onNavBack"
+                                type="Transparent" />
+                        </f:navigationActions>
+                    </f:DynamicPageTitle>
+                </f:title>
+
+                <f:header>
+                    <f:DynamicPageHeader pinnable="true">
+                        <f:content>
+                            <HBox wrap="Wrap" class="sapUiSmallMargin">
+                                <VBox class="sapUiLargeMarginEnd">
+                                    <Label text="Plant" design="Bold" />
+                                    <Text text="{/selectedItem/Plant} – {/selectedItem/PlantDesc}" class="sapUiSmallMarginTop" />
+                                </VBox>
+                                <VBox class="sapUiLargeMarginEnd">
+                                    <Label text="Supplier" design="Bold" />
+                                    <Text text="{/selectedItem/Supplier}" class="sapUiSmallMarginTop" />
+                                </VBox>
+                                <VBox>
+                                    <Label text="Delivery" design="Bold" />
+                                    <Text text="{/selectedItem/Delivery}" class="sapUiSmallMarginTop" />
+                                </VBox>
+                            </HBox>
+                        </f:content>
+                    </f:DynamicPageHeader>
+                </f:header>
+
+                <f:content>
+                    <VBox class="sapUiResponsiveMargin">
+
+                        <!-- General Information Section -->
+                        <Panel headerText="{i18n>sectionGeneralInfo}" expandable="true" expanded="true" class="sapUiSmallMarginBottom">
+                            <form:SimpleForm
+                                editable="false"
+                                layout="ResponsiveGridLayout"
+                                labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+                                columnsXL="2" columnsL="2" columnsM="1"
+                                class="sapUiSmallMargin">
+                                <form:content>
+                                    <Label text="{i18n>detailPurchaseOrder}" />
+                                    <Text text="{/selectedItem/PurchaseOrder}" />
+
+                                    <Label text="{i18n>detailDelivery}" />
+                                    <Text text="{/selectedItem/Delivery}" />
+
+                                    <Label text="{i18n>detailDate}" />
+                                    <Text text="{/selectedItem/DateFormatted}" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </Panel>
+
+                        <!-- Plant & Supplier Section -->
+                        <Panel headerText="{i18n>sectionPlantSupplier}" expandable="true" expanded="true" class="sapUiSmallMarginBottom">
+                            <form:SimpleForm
+                                editable="false"
+                                layout="ResponsiveGridLayout"
+                                labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+                                columnsXL="2" columnsL="2" columnsM="1"
+                                class="sapUiSmallMargin">
+                                <form:content>
+                                    <Label text="{i18n>detailPlant}" />
+                                    <HBox>
+                                        <ObjectStatus
+                                            text="{/selectedItem/Plant}"
+                                            state="None" />
+                                        <Text text=" – {/selectedItem/PlantDesc}" class="sapUiTinyMarginBegin" />
+                                    </HBox>
+
+                                    <Label text="{i18n>detailSupplier}" />
+                                    <Text text="{/selectedItem/Supplier}" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </Panel>
+
+                        <!-- Material Section -->
+                        <Panel headerText="{i18n>sectionMaterial}" expandable="true" expanded="true" class="sapUiSmallMarginBottom">
+                            <form:SimpleForm
+                                editable="false"
+                                layout="ResponsiveGridLayout"
+                                labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+                                columnsXL="1" columnsL="1" columnsM="1"
+                                class="sapUiSmallMargin">
+                                <form:content>
+                                    <Label text="{i18n>detailMaterialDescription}" />
+                                    <Text text="{/selectedItem/MaterialDescription}" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </Panel>
+
+                        <!-- Status Section -->
+                        <Panel headerText="{i18n>sectionStatus}" expandable="true" expanded="true" class="sapUiSmallMarginBottom">
+                            <form:SimpleForm
+                                editable="false"
+                                layout="ResponsiveGridLayout"
+                                labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+                                columnsXL="1" columnsL="1" columnsM="1"
+                                class="sapUiSmallMargin">
+                                <form:content>
+                                    <Label text="{i18n>detailHasError}" />
+                                    <ObjectStatus
+                                        id="errorStatus"
+                                        text="{= ${/selectedItem/HasError} ? 'Error' : 'None'}"
+                                        state="{= ${/selectedItem/HasError} ? 'Error' : 'Success'}"
+                                        icon="{= ${/selectedItem/HasError} ? 'sap-icon://error' : 'sap-icon://sys-enter-2'}" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </Panel>
+
+                    </VBox>
+                </f:content>
+
+            </f:DynamicPage>
+        </content>
+    </Page>
+</mvc:View>

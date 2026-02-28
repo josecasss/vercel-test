@@ -1,0 +1,19 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <SelectDialog
+        title="{i18n>valueHelpPlantTitle}"
+        confirm="onPlantValueHelpConfirm"
+        cancel="onPlantValueHelpCancel"
+        search="onPlantValueHelpSearch"
+        items="{/Plants}">
+
+        <StandardListItem
+            title="{Key}"
+            description="{Text}"
+            type="Active" />
+
+    </SelectDialog>
+
+</core:FragmentDefinition>

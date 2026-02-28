@@ -1,0 +1,19 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <SelectDialog
+        title="{i18n>valueHelpSupplierTitle}"
+        confirm="onSupplierValueHelpConfirm"
+        cancel="onSupplierValueHelpCancel"
+        search="onSupplierValueHelpSearch"
+        items="{/Suppliers}">
+
+        <StandardListItem
+            title="{Key}"
+            description="{Text}"
+            type="Active" />
+
+    </SelectDialog>
+
+</core:FragmentDefinition>
