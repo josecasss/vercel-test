@@ -1,0 +1,19 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <SelectDialog
+        title="{i18n>valueHelpSalesOrgTitle}"
+        confirm="onSalesOrgConfirm"
+        cancel="onSalesOrgCancel"
+        search="onSalesOrgSearch"
+        items="{/SalesOrganizations}">
+
+        <StandardListItem
+            title="{Key}"
+            description="{Text}"
+            type="Active" />
+
+    </SelectDialog>
+
+</core:FragmentDefinition>

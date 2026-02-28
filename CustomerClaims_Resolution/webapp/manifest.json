@@ -1,0 +1,82 @@
+{
+    "_version": "1.58.0",
+    "sap.app": {
+        "id": "com.prototype.claims",
+        "type": "application",
+        "title": "Customer Claims - Resolution Workspace",
+        "description": "List Report and Object Page for Customer Claims Resolution",
+        "applicationVersion": {
+            "version": "1.0.0"
+        },
+        "i18n": "i18n/i18n.properties"
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "rootView": {
+            "viewName": "com.prototype.claims.view.App",
+            "type": "XML",
+            "async": true,
+            "id": "app"
+        },
+        "dependencies": {
+            "minUI5Version": "1.108.0",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.ui.layout": {},
+                "sap.f": {}
+            }
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "com.prototype.claims.i18n.i18n"
+                }
+            }
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "controlAggregation": "pages",
+                "controlId": "app",
+                "viewType": "XML",
+                "viewPath": "com.prototype.claims.view",
+                "async": true
+            },
+            "routes": [
+                {
+                    "name": "list",
+                    "pattern": "",
+                    "target": "list"
+                },
+                {
+                    "name": "detail",
+                    "pattern": "detail/{objectId}",
+                    "target": "detail"
+                }
+            ],
+            "targets": {
+                "list": {
+                    "viewType": "XML",
+                    "viewLevel": 1,
+                    "viewId": "list",
+                    "viewName": "List"
+                },
+                "detail": {
+                    "viewType": "XML",
+                    "viewLevel": 2,
+                    "viewId": "detail",
+                    "viewName": "Detail"
+                }
+            }
+        }
+    }
+}

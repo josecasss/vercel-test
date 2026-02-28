@@ -1,0 +1,188 @@
+<mvc:View
+    controllerName="com.prototype.claims.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <Page showHeader="false">
+        <content>
+            <f:DynamicPage
+                id="detailPage"
+                headerExpanded="true"
+                toggleHeaderOnTitleClick="true"
+                fitContent="true">
+
+                <!-- ─── PAGE TITLE ──────────────────────────────────── -->
+                <f:title>
+                    <f:DynamicPageTitle>
+
+                        <f:heading>
+                            <Title
+                                text="{/selectedItem/ClaimID}"
+                                level="H2" />
+                        </f:heading>
+
+                        <f:subheading>
+                            <Text text="{/selectedItem/CustomerName}" />
+                        </f:subheading>
+
+                        <f:actions>
+                            <Button
+                                text="{i18n>detailEdit}"
+                                icon="sap-icon://edit"
+                                type="Transparent" />
+                        </f:actions>
+
+                        <f:navigationActions>
+                            <Button
+                                icon="sap-icon://nav-back"
+                                tooltip="{i18n>detailBack}"
+                                press="onNavBack"
+                                type="Transparent" />
+                        </f:navigationActions>
+
+                    </f:DynamicPageTitle>
+                </f:title>
+
+                <!-- ─── COLLAPSIBLE HEADER ─────────────────────────── -->
+                <f:header>
+                    <f:DynamicPageHeader pinnable="true">
+                        <f:content>
+                            <HBox wrap="Wrap" class="sapUiSmallMargin">
+
+                                <VBox class="sapUiLargeMarginEnd">
+                                    <Label text="Claim Category" design="Bold" />
+                                    <Text text="{/selectedItem/ClaimCategory}" class="sapUiTinyMarginTop" />
+                                </VBox>
+
+                                <VBox class="sapUiLargeMarginEnd">
+                                    <Label text="Priority" design="Bold" />
+                                    <ObjectStatus
+                                        text="{/selectedItem/PriorityText}"
+                                        state="{= ${/selectedItem/Priority} === '01' ? 'Error' : (${/selectedItem/Priority} === '02' ? 'Warning' : 'None') }"
+                                        class="sapUiTinyMarginTop" />
+                                </VBox>
+
+                                <VBox class="sapUiLargeMarginEnd">
+                                    <Label text="Date" design="Bold" />
+                                    <Text text="{/selectedItem/DateFormatted}" class="sapUiTinyMarginTop" />
+                                </VBox>
+
+                                <VBox>
+                                    <Label text="Reference Invoice" design="Bold" />
+                                    <Text text="{/selectedItem/ReferenceInvoice}" class="sapUiTinyMarginTop" />
+                                </VBox>
+
+                            </HBox>
+                        </f:content>
+                    </f:DynamicPageHeader>
+                </f:header>
+
+                <!-- ─── MAIN CONTENT ───────────────────────────────── -->
+                <f:content>
+                    <VBox class="sapUiResponsiveMargin">
+
+                        <!-- SECTION 1: General Information -->
+                        <Panel
+                            headerText="{i18n>sectionGeneralInfo}"
+                            expandable="true"
+                            expanded="true"
+                            class="sapUiSmallMarginBottom">
+                            <form:SimpleForm
+                                editable="false"
+                                layout="ResponsiveGridLayout"
+                                labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+                                columnsXL="2" columnsL="2" columnsM="1"
+                                class="sapUiSmallMargin">
+                                <form:content>
+                                    <Label text="{i18n>detailClaimID}" />
+                                    <Text text="{/selectedItem/ClaimID}" />
+
+                                    <Label text="{i18n>detailReferenceInvoice}" />
+                                    <Text text="{/selectedItem/ReferenceInvoice}" />
+
+                                    <Label text="{i18n>detailDate}" />
+                                    <Text text="{/selectedItem/DateFormatted}" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </Panel>
+
+                        <!-- SECTION 2: Customer & Organization -->
+                        <Panel
+                            headerText="{i18n>sectionCustomerOrg}"
+                            expandable="true"
+                            expanded="true"
+                            class="sapUiSmallMarginBottom">
+                            <form:SimpleForm
+                                editable="false"
+                                layout="ResponsiveGridLayout"
+                                labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+                                columnsXL="2" columnsL="2" columnsM="1"
+                                class="sapUiSmallMargin">
+                                <form:content>
+                                    <Label text="{i18n>detailSalesOrg}" />
+                                    <HBox>
+                                        <Text text="{/selectedItem/SalesOrg}" />
+                                        <Text text=" – {/selectedItem/SalesOrgDesc}" />
+                                    </HBox>
+
+                                    <Label text="{i18n>detailCustomer}" />
+                                    <HBox>
+                                        <Text text="{/selectedItem/CustomerCode}" />
+                                        <Text text=" – {/selectedItem/CustomerName}" />
+                                    </HBox>
+                                </form:content>
+                            </form:SimpleForm>
+                        </Panel>
+
+                        <!-- SECTION 3: Claim Details -->
+                        <Panel
+                            headerText="{i18n>sectionClaimDetails}"
+                            expandable="true"
+                            expanded="true"
+                            class="sapUiSmallMarginBottom">
+                            <form:SimpleForm
+                                editable="false"
+                                layout="ResponsiveGridLayout"
+                                labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+                                columnsXL="1" columnsL="1" columnsM="1"
+                                class="sapUiSmallMargin">
+                                <form:content>
+                                    <Label text="{i18n>detailClaimCategory}" />
+                                    <Text text="{/selectedItem/ClaimCategory}" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </Panel>
+
+                        <!-- SECTION 4: Status -->
+                        <Panel
+                            headerText="{i18n>sectionStatus}"
+                            expandable="true"
+                            expanded="true"
+                            class="sapUiSmallMarginBottom">
+                            <form:SimpleForm
+                                editable="false"
+                                layout="ResponsiveGridLayout"
+                                labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+                                columnsXL="1" columnsL="1" columnsM="1"
+                                class="sapUiSmallMargin">
+                                <form:content>
+                                    <Label text="{i18n>detailCriticalIssue}" />
+                                    <ObjectStatus
+                                        text="{= ${/selectedItem/HasError} ? 'Yes – Critical Issue Detected' : 'No – No Issues Found'}"
+                                        state="{= ${/selectedItem/HasError} ? 'Error' : 'Success'}"
+                                        icon="{= ${/selectedItem/HasError} ? 'sap-icon://alert' : 'sap-icon://sys-enter-2'}" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </Panel>
+
+                    </VBox>
+                </f:content>
+
+            </f:DynamicPage>
+        </content>
+    </Page>
+</mvc:View>
