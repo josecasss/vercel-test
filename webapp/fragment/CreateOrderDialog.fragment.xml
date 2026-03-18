@@ -1,0 +1,90 @@
+<core:FragmentDefinition
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+
+  <Dialog
+    id="createOrderDialog"
+    title="{i18n>dialogCreateTitle}"
+    contentWidth="32rem"
+    resizable="true"
+    draggable="true">
+
+    <content>
+      <VBox class="sapUiSmallMarginBeginEnd sapUiSmallMarginTop">
+
+        <Label text="{i18n>colDescription}" required="true" class="sapUiTinyMarginTop" />
+        <Input
+          id="inputDescription"
+          value="{/newOrder/Description}"
+          placeholder="{i18n>phDescription}"
+          maxLength="80"
+          valueLiveUpdate="true" />
+
+        <Label text="{i18n>colEquipment}" required="true" class="sapUiTinyMarginTop" />
+        <Input
+          id="inputEquipment"
+          value="{/newOrder/Equipment}"
+          placeholder="{i18n>phEquipment}"
+          maxLength="20"
+          valueLiveUpdate="true" />
+
+        <Label text="{i18n>colPriority}" class="sapUiTinyMarginTop" />
+        <Select
+          id="selectPriority"
+          selectedKey="{/newOrder/Priority}"
+          width="100%">
+          <core:Item key="High"   text="{i18n>priorityHigh}" />
+          <core:Item key="Medium" text="{i18n>priorityMedium}" />
+          <core:Item key="Low"    text="{i18n>priorityLow}" />
+        </Select>
+
+        <Label text="{i18n>colPlannedStart}" class="sapUiTinyMarginTop" />
+        <DatePicker
+          id="dpStart"
+          value="{/newOrder/PlannedStart}"
+          valueFormat="yyyy-MM-dd"
+          displayFormat="dd.MM.yyyy"
+          width="100%"
+          placeholder="DD.MM.YYYY" />
+
+        <Label text="{i18n>colPlannedEnd}" class="sapUiTinyMarginTop" />
+        <DatePicker
+          id="dpEnd"
+          value="{/newOrder/PlannedEnd}"
+          valueFormat="yyyy-MM-dd"
+          displayFormat="dd.MM.yyyy"
+          width="100%"
+          placeholder="DD.MM.YYYY" />
+
+        <Label text="{i18n>colResponsible}" class="sapUiTinyMarginTop" />
+        <Input
+          value="{/newOrder/Responsible}"
+          placeholder="{i18n>phResponsible}"
+          maxLength="40" />
+
+        <Label text="{i18n>colPlant}" class="sapUiTinyMarginTop" />
+        <Input
+          value="{/newOrder/Plant}"
+          placeholder="{i18n>phPlant}"
+          maxLength="10"
+          class="sapUiSmallMarginBottom" />
+
+      </VBox>
+    </content>
+
+    <beginButton>
+      <Button
+        text="{i18n>btnCreate}"
+        type="Emphasized"
+        press="onConfirmCreate" />
+    </beginButton>
+
+    <endButton>
+      <Button
+        text="{i18n>btnCancel}"
+        press="onCancelCreate" />
+    </endButton>
+
+  </Dialog>
+
+</core:FragmentDefinition>
