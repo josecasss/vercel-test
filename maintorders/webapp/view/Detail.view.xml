@@ -1,0 +1,181 @@
+<mvc:View
+  controllerName="com.prototype.maintorders.controller.Detail"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:f="sap.f"
+  xmlns:form="sap.ui.layout.form"
+  xmlns:core="sap.ui.core"
+  displayBlock="true">
+
+  <f:DynamicPage id="detailPage" fitContent="true">
+
+    <!-- ═══ Header Title ══════════════════════════════════════════════════ -->
+    <f:title>
+      <f:DynamicPageTitle>
+
+        <f:heading>
+          <Title text="{/selectedItem/OrderId}" wrapping="false" />
+        </f:heading>
+
+        <f:expandedHeading>
+          <FlexBox alignItems="Center" wrap="Wrap">
+            <Title
+              text="{/selectedItem/OrderId}"
+              class="sapUiSmallMarginEnd"
+              wrapping="false" />
+            <ObjectStatus
+              text="{/selectedItem/Status}"
+              state="{path: '/selectedItem/Status', formatter: '.formatStatus'}"
+              icon="{path: '/selectedItem/Status', formatter: '.formatStatusIcon'}"
+              inverted="true" />
+          </FlexBox>
+        </f:expandedHeading>
+
+        <f:snappedHeading>
+          <FlexBox alignItems="Center" wrap="Wrap">
+            <Title
+              text="{/selectedItem/OrderId}"
+              class="sapUiSmallMarginEnd"
+              wrapping="false" />
+            <ObjectStatus
+              text="{/selectedItem/Status}"
+              state="{path: '/selectedItem/Status', formatter: '.formatStatus'}"
+              inverted="true" />
+          </FlexBox>
+        </f:snappedHeading>
+
+        <f:actions>
+          <Button
+            text="{i18n>btnApprove}"
+            type="Accept"
+            icon="sap-icon://accept"
+            press="onApprove" />
+          <Button
+            text="{i18n>btnReject}"
+            type="Reject"
+            icon="sap-icon://decline"
+            press="onReject" />
+        </f:actions>
+
+        <f:navigationActions>
+          <Button
+            icon="sap-icon://nav-back"
+            press="onNavBack"
+            tooltip="{i18n>btnBack}" />
+        </f:navigationActions>
+
+      </f:DynamicPageTitle>
+    </f:title>
+
+    <!-- ═══ Header Content ════════════════════════════════════════════════ -->
+    <f:header>
+      <f:DynamicPageHeader pinnable="true">
+        <f:content>
+          <FlexBox wrap="Wrap" class="sapUiSmallMargin">
+            <FlexBox direction="Column" class="sapUiSmallMarginEnd sapUiMediumMarginBottom">
+              <ObjectAttribute title="{i18n>colEquipment}" text="{/selectedItem/Equipment}" />
+            </FlexBox>
+            <FlexBox direction="Column" class="sapUiSmallMarginEnd sapUiMediumMarginBottom">
+              <ObjectAttribute
+                title="{i18n>colPriority}"
+                text="{/selectedItem/Priority}" />
+            </FlexBox>
+            <FlexBox direction="Column" class="sapUiSmallMarginEnd sapUiMediumMarginBottom">
+              <ObjectAttribute title="{i18n>colResponsible}" text="{/selectedItem/Responsible}" />
+            </FlexBox>
+            <FlexBox direction="Column" class="sapUiSmallMarginEnd sapUiMediumMarginBottom">
+              <ObjectAttribute title="{i18n>colPlant}" text="{/selectedItem/Plant}" />
+            </FlexBox>
+            <FlexBox direction="Column" class="sapUiSmallMarginEnd sapUiMediumMarginBottom">
+              <ObjectAttribute title="{i18n>colPlannedStart}" text="{/selectedItem/PlannedStartFormatted}" />
+            </FlexBox>
+            <FlexBox direction="Column" class="sapUiMediumMarginBottom">
+              <ObjectAttribute title="{i18n>colPlannedEnd}" text="{/selectedItem/PlannedEndFormatted}" />
+            </FlexBox>
+          </FlexBox>
+        </f:content>
+      </f:DynamicPageHeader>
+    </f:header>
+
+    <!-- ═══ Page Content ══════════════════════════════════════════════════ -->
+    <f:content>
+
+      <!-- General Information -->
+      <Panel
+        headerText="{i18n>sectionGeneral}"
+        class="sapUiResponsiveMargin"
+        width="auto"
+        expandable="false">
+        <form:SimpleForm
+          editable="false"
+          layout="ResponsiveGridLayout"
+          labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+          columnsXL="2"   columnsL="2"   columnsM="1">
+          <form:content>
+            <Label text="{i18n>colOrderId}" />
+            <Text text="{/selectedItem/OrderId}" />
+
+            <Label text="{i18n>colDescription}" />
+            <Text text="{/selectedItem/Description}" />
+
+            <Label text="{i18n>colEquipment}" />
+            <Text text="{/selectedItem/Equipment}" />
+
+            <Label text="{i18n>colPriority}" />
+            <ObjectStatus
+              text="{/selectedItem/Priority}"
+              state="{path: '/selectedItem/Priority', formatter: '.formatPriority'}" />
+
+            <Label text="{i18n>colStatus}" />
+            <ObjectStatus
+              text="{/selectedItem/Status}"
+              state="{path: '/selectedItem/Status', formatter: '.formatStatus'}"
+              icon="{path: '/selectedItem/Status', formatter: '.formatStatusIcon'}" />
+          </form:content>
+        </form:SimpleForm>
+      </Panel>
+
+      <!-- Schedule & Assignment -->
+      <Panel
+        headerText="{i18n>sectionSchedule}"
+        class="sapUiResponsiveMargin"
+        width="auto"
+        expandable="false">
+        <form:SimpleForm
+          editable="false"
+          layout="ResponsiveGridLayout"
+          labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+          columnsXL="2"   columnsL="2"   columnsM="1">
+          <form:content>
+            <Label text="{i18n>colPlannedStart}" />
+            <Text text="{/selectedItem/PlannedStartFormatted}" />
+
+            <Label text="{i18n>colPlannedEnd}" />
+            <Text text="{/selectedItem/PlannedEndFormatted}" />
+
+            <Label text="{i18n>colResponsible}" />
+            <Text text="{/selectedItem/Responsible}" />
+
+            <Label text="{i18n>colPlant}" />
+            <Text text="{/selectedItem/Plant}" />
+          </form:content>
+        </form:SimpleForm>
+      </Panel>
+
+      <!-- Notes -->
+      <Panel
+        headerText="{i18n>sectionNotes}"
+        class="sapUiResponsiveMargin"
+        width="auto"
+        expandable="true"
+        expanded="true">
+        <Text
+          text="{/selectedItem/Notes}"
+          class="sapUiSmallMargin"
+          wrapping="true" />
+      </Panel>
+
+    </f:content>
+  </f:DynamicPage>
+
+</mvc:View>

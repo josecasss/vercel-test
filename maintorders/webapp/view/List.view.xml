@@ -1,0 +1,123 @@
+<mvc:View
+  controllerName="com.prototype.maintorders.controller.List"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  displayBlock="true">
+
+  <Page
+    id="listPage"
+    title="{i18n>appTitle}"
+    showNavButton="false">
+
+    <content>
+
+      <!-- ═══ Worklist Table ═══════════════════════════════════════════════ -->
+      <Table
+        id="ordersTable"
+        items="{/displayOrders}"
+        mode="MultiSelect"
+        noDataText="{i18n>tableNoData}"
+        growing="true"
+        growingThreshold="10"
+        growingScrollToLoad="false"
+        selectionChange="onSelectionChange">
+
+        <headerToolbar>
+          <OverflowToolbar>
+            <Title
+              text="{i18n>tableTitle} ({/orderCount})"
+              level="H3" />
+            <ToolbarSpacer />
+            <SearchField
+              id="searchField"
+              width="18rem"
+              search="onSearch"
+              liveChange="onSearchLive"
+              placeholder="{i18n>searchPlaceholder}" />
+            <Button
+              id="btnCreate"
+              text="{i18n>btnCreate}"
+              type="Emphasized"
+              icon="sap-icon://add"
+              press="onCreateOrder" />
+            <Button
+              id="btnApprove"
+              text="{i18n>btnApprove}"
+              type="Accept"
+              icon="sap-icon://accept"
+              press="onApprove"
+              enabled="false" />
+            <Button
+              id="btnReject"
+              text="{i18n>btnReject}"
+              type="Reject"
+              icon="sap-icon://decline"
+              press="onReject"
+              enabled="false" />
+            <Button
+              id="btnDelete"
+              text="{i18n>btnDelete}"
+              icon="sap-icon://delete"
+              press="onDelete"
+              enabled="false" />
+            <Button
+              id="btnExport"
+              text="{i18n>btnExport}"
+              icon="sap-icon://excel-attachment"
+              press="onExport" />
+          </OverflowToolbar>
+        </headerToolbar>
+
+        <columns>
+          <Column width="8rem">
+            <Text text="{i18n>colOrderId}" />
+          </Column>
+          <Column minScreenWidth="Tablet" demandPopin="true">
+            <Text text="{i18n>colDescription}" />
+          </Column>
+          <Column width="9rem" minScreenWidth="Tablet" demandPopin="true">
+            <Text text="{i18n>colEquipment}" />
+          </Column>
+          <Column width="7rem" hAlign="Center">
+            <Text text="{i18n>colPriority}" />
+          </Column>
+          <Column width="9rem" hAlign="Center">
+            <Text text="{i18n>colStatus}" />
+          </Column>
+          <Column width="8rem" minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+            <Text text="{i18n>colPlannedStart}" />
+          </Column>
+          <Column width="9rem" minScreenWidth="Desktop" demandPopin="true">
+            <Text text="{i18n>colResponsible}" />
+          </Column>
+          <Column width="5rem" hAlign="Center" minScreenWidth="Desktop" demandPopin="true">
+            <Text text="{i18n>colPlant}" />
+          </Column>
+        </columns>
+
+        <items>
+          <ColumnListItem type="Navigation" press="onItemPress">
+            <cells>
+              <ObjectIdentifier title="{OrderId}" />
+              <Text text="{Description}" wrapping="false" maxLines="1" />
+              <Text text="{Equipment}" />
+              <ObjectStatus
+                text="{Priority}"
+                state="{path: 'Priority', formatter: '.formatPriority'}" />
+              <ObjectStatus
+                text="{Status}"
+                state="{path: 'Status', formatter: '.formatStatus'}"
+                icon="{path: 'Status', formatter: '.formatStatusIcon'}" />
+              <Text text="{PlannedStartFormatted}" />
+              <Text text="{Responsible}" />
+              <Text text="{Plant}" />
+            </cells>
+          </ColumnListItem>
+        </items>
+
+      </Table>
+    </content>
+  </Page>
+
+</mvc:View>
