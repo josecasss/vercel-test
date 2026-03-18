@@ -1,0 +1,7 @@
+<mvc:View
+    controllerName="com.aibel.assettracking.controller.App"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    displayBlock="true">
+    <App id="rootApp" />
+</mvc:View>

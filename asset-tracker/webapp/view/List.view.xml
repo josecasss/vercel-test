@@ -1,0 +1,307 @@
+<mvc:View
+    controllerName="com.aibel.assettracking.controller.List"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <!--
+        Fiori Elements List Report layout — faithful replica of screenshot:
+        1. Shell bar (SAP logo + app title)
+        2. Variant bar ("Standard ~")
+        3. Filter bar (labelled inputs + Go + Adapt Filters)
+        4. DynamicPage.content → OverflowToolbar + MultiSelect Table
+    -->
+    <Page id="listPage" showHeader="false" backgroundDesign="Solid">
+
+        <customHeader>
+            <!-- ── SAP Shell bar (top blue bar) ────────────────────── -->
+            <Bar design="Header">
+                <contentLeft>
+                    <!-- SAP Logo SVG inline -->
+                    <core:HTML content="&lt;svg xmlns='http://www.w3.org/2000/svg' width='36' height='18' viewBox='0 0 340 170'&gt;&lt;rect width='340' height='170' rx='10' fill='%230070f2'/&gt;&lt;text x='170' y='125' font-size='110' font-weight='bold' font-family='Arial' fill='white' text-anchor='middle'&gt;SAP&lt;/text&gt;&lt;/svg&gt;" />
+                    <Title text="Preview for Fiori Elements App" level="H4" titleStyle="H5" class="sapUiSmallMarginBegin" />
+                </contentLeft>
+                <contentRight>
+                    <Button icon="sap-icon://person-placeholder" type="Transparent" />
+                </contentRight>
+            </Bar>
+        </customHeader>
+
+        <content>
+            <VBox height="100%">
+
+                <!-- ── Variant bar ("Standard ~") ──────────────────── -->
+                <HBox
+                    alignItems="Center"
+                    class="atVariantBar"
+                    backgroundDesign="Transparent">
+                    <Button
+                        text="Standard"
+                        icon="sap-icon://slim-arrow-down"
+                        iconFirst="false"
+                        type="Transparent"
+                        class="sapUiNoMargin"
+                        style="font-size:1.1rem; font-weight:600; color: var(--sapLinkColor);" />
+                </HBox>
+
+                <!-- ── Filter Bar ───────────────────────────────────── -->
+                <VBox class="atFilterBar">
+                    <!-- Row 1: all filter inputs -->
+                    <HBox alignItems="End" wrap="Wrap" class="sapUiTinyMarginBottom">
+
+                        <!-- Global search -->
+                        <VBox class="sapUiSmallMarginEnd sapUiTinyMarginBottom">
+                            <SearchField
+                                id="searchField"
+                                value="{/filters/search}"
+                                placeholder="Search"
+                                showSearchButton="true"
+                                search="onSearch"
+                                width="180px" />
+                        </VBox>
+
+                        <!-- Editing Status -->
+                        <VBox class="sapUiSmallMarginEnd sapUiTinyMarginBottom">
+                            <Label text="{i18n>filterEditingStatus}" class="atFilterLabel" />
+                            <Select
+                                selectedKey="{/filters/editingStatus}"
+                                width="130px">
+                                <core:Item key="ALL"  text="{i18n>filterEditingAll}" />
+                                <core:Item key="ACT"  text="Active" />
+                                <core:Item key="DRFT" text="Draft" />
+                            </Select>
+                        </VBox>
+
+                        <!-- AssetTagNumber -->
+                        <VBox class="sapUiSmallMarginEnd sapUiTinyMarginBottom">
+                            <Label text="{i18n>filterAssetTag}" class="atFilterLabel" />
+                            <Input
+                                value="{/filters/assetTag}"
+                                width="160px"
+                                placeholder="Tag…"
+                                showValueHelp="true" />
+                        </VBox>
+
+                        <!-- Company Code -->
+                        <VBox class="sapUiSmallMarginEnd sapUiTinyMarginBottom">
+                            <Label text="{i18n>filterCompanyCode}" class="atFilterLabel" />
+                            <Input
+                                value="{/filters/companyCode}"
+                                width="130px"
+                                placeholder="BUK…"
+                                showValueHelp="true" />
+                        </VBox>
+
+                        <!-- Asset -->
+                        <VBox class="sapUiSmallMarginEnd sapUiTinyMarginBottom">
+                            <Label text="{i18n>filterAsset}" class="atFilterLabel" />
+                            <Input
+                                value="{/filters/assetNo}"
+                                width="130px"
+                                placeholder="ANLN1…"
+                                showValueHelp="true" />
+                        </VBox>
+
+                        <!-- Sub-number -->
+                        <VBox class="sapUiSmallMarginEnd sapUiTinyMarginBottom">
+                            <Label text="{i18n>filterSubNumber}" class="atFilterLabel" />
+                            <Input
+                                value="{/filters/subNumber}"
+                                width="110px"
+                                placeholder="ANLN2…"
+                                showValueHelp="true" />
+                        </VBox>
+
+                        <!-- Asset Status Code -->
+                        <VBox class="sapUiSmallMarginEnd sapUiTinyMarginBottom">
+                            <Label text="{i18n>filterStatusCode}" class="atFilterLabel" />
+                            <Select
+                                selectedKey="{/filters/statusCode}"
+                                width="140px">
+                                <core:Item key=""   text="(All)" />
+                                <core:Item key="00" text="00 – ASSET OK" />
+                                <core:Item key="01" text="01 – DAMAGE" />
+                                <core:Item key="02" text="02 – NOT MATCH CC" />
+                                <core:Item key="03" text="03 – WRITE OFF" />
+                                <core:Item key="04" text="04 – SOLD" />
+                            </Select>
+                        </VBox>
+
+                        <!-- Go button (aligned to filter inputs bottom) -->
+                        <VBox class="sapUiSmallMarginEnd sapUiTinyMarginBottom">
+                            <Label text="" class="atFilterLabel" />
+                            <Button
+                                text="{i18n>btnGo}"
+                                type="Emphasized"
+                                press="onSearch" />
+                        </VBox>
+
+                        <!-- Adapt Filters -->
+                        <VBox class="sapUiTinyMarginBottom">
+                            <Label text="" class="atFilterLabel" />
+                            <Link text="{i18n>btnAdaptFilters}" press="onClearFilters" />
+                        </VBox>
+
+                    </HBox>
+                </VBox>
+
+                <!-- ── Table section ────────────────────────────────── -->
+                <f:DynamicPage
+                    id="tableDynamicPage"
+                    headerExpanded="false"
+                    showHeaderContent="false"
+                    fitContent="false"
+                    class="sapUiNoContentPadding">
+
+                    <f:title>
+                        <f:DynamicPageTitle>
+                            <f:heading>
+                                <Title text="{/tableTitle}" level="H3" />
+                            </f:heading>
+                            <f:actions>
+                                <!-- Export / Download Template -->
+                                <Button
+                                    icon="sap-icon://download"
+                                    text="{i18n>btnExport}"
+                                    type="Transparent"
+                                    press="onExport" />
+
+                                <!-- ── Status action buttons ───────── -->
+                                <Button
+                                    text="{i18n>actionNotMatchCC}"
+                                    type="Transparent"
+                                    press="onNotMatchCC" />
+                                <Button
+                                    text="{i18n>actionFlagDamage}"
+                                    type="Transparent"
+                                    press="onFlagDamage" />
+                                <Button
+                                    text="{i18n>actionWriteOff}"
+                                    type="Transparent"
+                                    press="onProposeWriteOff" />
+                                <Button
+                                    text="{i18n>actionFlagSold}"
+                                    type="Transparent"
+                                    press="onFlagSold" />
+                                <Button
+                                    text="{i18n>actionReset}"
+                                    type="Transparent"
+                                    press="onResetNormal" />
+
+                                <!-- ── Separator ──────────────────── -->
+                                <ToolbarSeparator />
+
+                                <!-- Create / Delete -->
+                                <Button
+                                    text="{i18n>btnCreate}"
+                                    type="Transparent" />
+                                <Button
+                                    text="{i18n>btnDelete}"
+                                    type="Transparent" />
+
+                                <!-- ── Icons ──────────────────────── -->
+                                <Button
+                                    icon="sap-icon://bar-code"
+                                    tooltip="{i18n>btnScan}"
+                                    type="Transparent"
+                                    press="onScanBarcode" />
+                                <Button
+                                    icon="sap-icon://refresh"
+                                    tooltip="{i18n>btnRefresh}"
+                                    type="Transparent"
+                                    press="onRefresh" />
+                                <Button
+                                    icon="sap-icon://action-settings"
+                                    type="Transparent" />
+                            </f:actions>
+                        </f:DynamicPageTitle>
+                    </f:title>
+
+                    <f:content>
+                        <!--
+                            MultiSelect mode gives checkboxes like the screenshot.
+                            ColumnListItem type="Navigation" shows the ">" arrow.
+                        -->
+                        <Table
+                            id="assetTable"
+                            items="{/displayAssets}"
+                            mode="MultiSelect"
+                            noDataText="{i18n>noDataText}"
+                            growing="true"
+                            growingThreshold="25"
+                            growingScrollToLoad="true"
+                            itemPress="onItemPress"
+                            highlight="{StatusHighlight}"
+                            class="sapUiNoMargin">
+
+                            <columns>
+                                <Column width="auto">
+                                    <Text text="{i18n>colAssetTag}" />
+                                </Column>
+                                <Column width="7rem" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>colCompanyCode}" />
+                                </Column>
+                                <Column width="6rem" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>colAsset}" />
+                                </Column>
+                                <Column width="6rem" minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="{i18n>colSubNumber}" />
+                                </Column>
+                                <Column width="10rem">
+                                    <Text text="{i18n>colStatus}" />
+                                </Column>
+                                <Column width="8rem" minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="{i18n>colCreationDate}" />
+                                </Column>
+                                <Column width="auto" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>colDescription}" />
+                                </Column>
+                                <Column width="8rem" minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="{i18n>colChangedDate}" />
+                                </Column>
+                            </columns>
+
+                            <ColumnListItem
+                                type="Navigation"
+                                highlight="{StatusHighlight}">
+
+                                <!-- Asset Tag Number (+ description in brackets, like screenshot) -->
+                                <Text
+                                    text="{= ${Id} + ' (' + ${Description} + ')' }"
+                                    maxLines="1" />
+
+                                <!-- Company Code -->
+                                <Text text="{CompanyCode}" />
+
+                                <!-- Asset (MainAssetNumber) -->
+                                <Text text="{MainAssetNumber}" />
+
+                                <!-- Sub-number -->
+                                <Text text="{SubNumber}" />
+
+                                <!-- Status -->
+                                <ObjectStatus
+                                    text="{StatusId}"
+                                    state="{StatusState}"
+                                    inverted="false" />
+
+                                <!-- Creation Date -->
+                                <Text text="{CreationDateFmt}" />
+
+                                <!-- Description -->
+                                <Text text="{Description}" maxLines="1" />
+
+                                <!-- Changed Date (LastCountedDate) -->
+                                <Text text="{LastCountedDateFmt}" />
+
+                            </ColumnListItem>
+                        </Table>
+                    </f:content>
+                </f:DynamicPage>
+
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>
