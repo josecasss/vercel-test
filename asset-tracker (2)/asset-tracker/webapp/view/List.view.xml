@@ -1,0 +1,156 @@
+<mvc:View
+    controllerName="com.aibel.assettracking.controller.List"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <!--
+        Fiori List Report floorplan.
+        sap.f.DynamicPage provides the collapsible header area (filter bar).
+        sap.m.Table holds the data rows.
+    -->
+    <Page
+        id="listPage"
+        showHeader="false">
+
+        <content>
+            <f:DynamicPage
+                id="dynamicPage"
+                headerExpanded="true"
+                toggleHeaderOnTitleClick="false"
+                fitContent="true"
+                xmlns:f="sap.f">
+
+                <!-- ─── Dynamic Page Title ──────────────────────────── -->
+                <f:title>
+                    <f:DynamicPageTitle>
+                        <f:heading>
+                            <Title text="{i18n>masterTitle}" level="H2" />
+                        </f:heading>
+                        <f:snappedHeading>
+                            <Title text="{i18n>masterTitle}" level="H2" />
+                        </f:snappedHeading>
+                        <f:actions>
+                            <!-- Barcode / QR camera scan -->
+                            <Button
+                                icon="sap-icon://bar-code"
+                                text="{i18n>btnScan}"
+                                type="Emphasized"
+                                press="onScanBarcode" />
+                            <!-- Sort -->
+                            <Button
+                                icon="sap-icon://sort"
+                                tooltip="{i18n>btnSort}"
+                                type="Transparent"
+                                press="onSort" />
+                            <!-- Export -->
+                            <Button
+                                icon="sap-icon://excel-attachment"
+                                tooltip="{i18n>btnExport}"
+                                type="Transparent"
+                                press="onExport" />
+                            <!-- Refresh -->
+                            <Button
+                                icon="sap-icon://refresh"
+                                tooltip="{i18n>btnRefresh}"
+                                type="Transparent"
+                                press="onRefresh" />
+                        </f:actions>
+                    </f:DynamicPageTitle>
+                </f:title>
+
+                <!-- ─── Collapsible Header: Search Bar ──────────────── -->
+                <f:header>
+                    <f:DynamicPageHeader pinnable="true">
+                        <f:content>
+                            <SearchField
+                                id="searchField"
+                                placeholder="{i18n>searchPlaceholder}"
+                                search="onSearch"
+                                liveChange="onSearch"
+                                width="100%"
+                                class="sapUiSmallMarginBottom" />
+                        </f:content>
+                    </f:DynamicPageHeader>
+                </f:header>
+
+                <!-- ─── Table ────────────────────────────────────────── -->
+                <f:content>
+                    <Table
+                        id="assetTable"
+                        items="{/displayAssets}"
+                        mode="None"
+                        noDataText="{i18n>noDataText}"
+                        growing="true"
+                        growingThreshold="20"
+                        growingScrollToLoad="true"
+                        itemPress="onItemPress"
+                        class="sapUiResponsiveContentPadding">
+
+                        <!-- Column headers -->
+                        <columns>
+                            <Column width="7rem">
+                                <Text text="{i18n>colAsset}" />
+                            </Column>
+                            <Column minScreenWidth="Tablet" demandPopin="true">
+                                <Text text="{i18n>colDescription}" />
+                            </Column>
+                            <Column width="7rem" minScreenWidth="Desktop" demandPopin="true">
+                                <Text text="{i18n>colCC}" />
+                            </Column>
+                            <Column width="11rem">
+                                <Text text="{i18n>colStatus}" />
+                            </Column>
+                            <Column width="7rem" minScreenWidth="Tablet" demandPopin="true">
+                                <Text text="{i18n>colLastDate}" />
+                            </Column>
+                            <!-- Actions column — status change buttons -->
+                            <Column width="13rem" hAlign="Center">
+                                <Text text="{i18n>colActions}" />
+                            </Column>
+                        </columns>
+
+                        <!-- Row template -->
+                        <ColumnListItem type="Navigation">
+
+                            <!-- Asset Tag -->
+                            <Text text="{Id}" wrapping="false" />
+
+                            <!-- Description -->
+                            <Text text="{Description}" />
+
+                            <!-- Cost Center -->
+                            <Text text="{CostCenter}" wrapping="false" />
+
+                            <!-- Status — color-coded ObjectStatus -->
+                            <ObjectStatus
+                                text="{StatusText}"
+                                state="{StatusState}"
+                                inverted="false" />
+
+                            <!-- Last Counted date -->
+                            <Text text="{LastCountedDateFormatted}" wrapping="false" />
+
+                            <!--
+                                Quick Status Update button.
+                                Opens the StatusUpdateDialog fragment.
+                                Uses custom data to surface the current assetId to the controller.
+                            -->
+                            <HBox justifyContent="Center" alignItems="Center">
+                                <Button
+                                    icon="sap-icon://status-change"
+                                    text="Status"
+                                    type="Default"
+                                    press="onOpenStatusDialog"
+                                    class="sapUiTinyMarginEnd" />
+                            </HBox>
+
+                        </ColumnListItem>
+                    </Table>
+                </f:content>
+
+            </f:DynamicPage>
+        </content>
+    </Page>
+</mvc:View>

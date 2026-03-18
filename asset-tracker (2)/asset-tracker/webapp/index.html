@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asset Tracker</title>
+
+    <!--
+        jsQR — canvas-based QR/barcode decoder used as fallback
+        when native BarcodeDetector API is not available (e.g. Firefox, Safari).
+        Loaded eagerly so it's ready before any scan action.
+    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+
+    <script
+        id="sap-ui-bootstrap"
+        src="https://ui5.sap.com/resources/sap-ui-core.js"
+        data-sap-ui-theme="sap_horizon"
+        data-sap-ui-libs="sap.m,sap.ui.core,sap.ui.layout,sap.f"
+        data-sap-ui-resourceroots='{"com.aibel.assettracking": "./"}'
+        data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
+        data-sap-ui-compatVersion="edge"
+        data-sap-ui-async="true"
+        data-sap-ui-frameOptions="trusted">
+    </script>
+
+    <style>
+        /* Camera scan overlay — centred aiming frame */
+        #assetScanWrapper {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #assetScanVideo {
+            display: block;
+            width: 100%;
+            max-height: 340px;
+            object-fit: cover;
+        }
+        #assetScanOverlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+        #assetScanFrame {
+            width: 62%;
+            aspect-ratio: 1 / 1;
+            border: 3px solid #0070f2;
+            border-radius: 6px;
+            box-shadow: 0 0 0 9999px rgba(0,0,0,0.45);
+        }
+        #assetScanStatus {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #fff;
+            font-size: 0.8rem;
+            background: rgba(0,0,0,0.5);
+            padding: 4px 0;
+        }
+        /* Hidden canvas used by jsQR for frame capture */
+        #assetScanCanvas { display: none; }
+    </style>
+</head>
+<body class="sapUiBody" id="content">
+    <div
+        data-sap-ui-component
+        data-name="com.aibel.assettracking"
+        data-id="container"
+        data-settings='{"id":"assettracking"}'>
+    </div>
+</body>
+</html>

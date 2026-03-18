@@ -1,0 +1,73 @@
+{
+    "_version": "1.59.0",
+    "sap.app": {
+        "id": "com.aibel.assettracking",
+        "type": "application",
+        "title": "{{appTitle}}",
+        "description": "Asset Tracking — IM_ASSET_TRACKING",
+        "applicationVersion": { "version": "2.0.0" },
+        "i18n": "i18n/i18n.properties"
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "deviceTypes": { "desktop": true, "tablet": true, "phone": true }
+    },
+    "sap.ui5": {
+        "rootView": {
+            "viewName": "com.aibel.assettracking.view.App",
+            "type": "XML",
+            "async": true,
+            "id": "app"
+        },
+        "dependencies": {
+            "minUI5Version": "1.108.0",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.ui.layout": {},
+                "sap.f": {}
+            }
+        },
+        "contentDensities": { "compact": true, "cozy": true },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": { "bundleName": "com.aibel.assettracking.i18n.i18n" }
+            }
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "controlAggregation": "pages",
+                "controlId": "rootApp",
+                "viewType": "XML",
+                "viewPath": "com.aibel.assettracking.view",
+                "async": true
+            },
+            "routes": [
+                {
+                    "name": "list",
+                    "pattern": "",
+                    "target": "list"
+                },
+                {
+                    "name": "detail",
+                    "pattern": "Assets/{objectId}",
+                    "target": "detail"
+                }
+            ],
+            "targets": {
+                "list": {
+                    "viewType": "XML",
+                    "viewId": "list",
+                    "viewName": "List"
+                },
+                "detail": {
+                    "viewType": "XML",
+                    "viewId": "detail",
+                    "viewName": "Detail"
+                }
+            }
+        }
+    }
+}

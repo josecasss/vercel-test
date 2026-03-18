@@ -1,0 +1,111 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <!--
+        Quick Status Update dialog — shown from the List page per-row button.
+        Displays one colored Button per ZASSET_STAT_CODE value.
+        Pressing a button calls List.controller.js → onApplyStatus(oEvent).
+        The button's custom data "statusId" carries the target status code.
+
+        Button types used:
+          Accept    → green  (ASSET OK)
+          Reject    → red    (DAMAGE)
+          Attention → orange (NOT MATCH COSTCENTER, WRITE OFF)
+          Default   → grey   (SOLD)
+    -->
+    <Dialog
+        id="statusUpdateDialog"
+        title="{i18n>statusDialogTitle}"
+        contentWidth="360px"
+        resizable="false">
+
+        <content>
+            <VBox class="sapUiSmallMargin">
+
+                <!-- Current status label -->
+                <HBox alignItems="Center" class="sapUiSmallMarginBottom">
+                    <Label text="{i18n>lblCurrentStatus}" width="130px" class="sapUiSmallMarginEnd" />
+                    <ObjectStatus
+                        text="{/pendingAsset/StatusText}"
+                        state="{/pendingAsset/StatusState}" />
+                </HBox>
+
+                <Text
+                    text="{i18n>lblSelectStatus}"
+                    class="sapUiSmallMarginBottom" />
+
+                <!-- Status buttons — one per code -->
+                <FlexBox
+                    wrap="Wrap"
+                    justifyContent="Start"
+                    alignItems="Start"
+                    class="sapUiTinyMarginTop">
+
+                    <!-- 0 — ASSET OK (green) -->
+                    <Button
+                        text="✓  ASSET OK"
+                        type="Accept"
+                        press="onApplyStatus"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <customData>
+                            <core:CustomData key="statusId" value="0" />
+                        </customData>
+                    </Button>
+
+                    <!-- 1 — DAMAGE (red) -->
+                    <Button
+                        text="✗  DAMAGE"
+                        type="Reject"
+                        press="onApplyStatus"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <customData>
+                            <core:CustomData key="statusId" value="1" />
+                        </customData>
+                    </Button>
+
+                    <!-- 2 — NOT MATCH COSTCENTER (orange) -->
+                    <Button
+                        text="⚠  NOT MATCH CC"
+                        type="Attention"
+                        press="onApplyStatus"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <customData>
+                            <core:CustomData key="statusId" value="2" />
+                        </customData>
+                    </Button>
+
+                    <!-- 3 — WRITE OFF (orange) -->
+                    <Button
+                        text="⚠  WRITE OFF"
+                        type="Attention"
+                        press="onApplyStatus"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <customData>
+                            <core:CustomData key="statusId" value="3" />
+                        </customData>
+                    </Button>
+
+                    <!-- 4 — SOLD (grey) -->
+                    <Button
+                        text="ℹ  SOLD"
+                        type="Default"
+                        press="onApplyStatus"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <customData>
+                            <core:CustomData key="statusId" value="4" />
+                        </customData>
+                    </Button>
+
+                </FlexBox>
+            </VBox>
+        </content>
+
+        <endButton>
+            <Button
+                text="{i18n>btnCancelStatus}"
+                press="onCloseStatusDialog" />
+        </endButton>
+
+    </Dialog>
+</core:FragmentDefinition>

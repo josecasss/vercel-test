@@ -1,0 +1,13 @@
+<mvc:View
+    controllerName="com.aibel.assettracking.controller.App"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    displayBlock="true">
+
+    <!--
+        controlId in manifest.json routing config is "rootApp".
+        The router places List/Detail views inside this App's "pages" aggregation.
+    -->
+    <App id="rootApp" />
+
+</mvc:View>
