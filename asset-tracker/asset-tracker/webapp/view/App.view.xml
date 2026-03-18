@@ -1,0 +1,18 @@
+<mvc:View
+    controllerName="com.aibel.assettracking.controller.App"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    displayBlock="true">
+
+    <Shell id="shell" appWidthLimited="false" title="{i18n>shellTitle}">
+        <!--
+            SplitApp id MUST match manifest.json routing config "controlId": "splitApp"
+            defaultTransitionName* = "show" avoids slide animation on initial load
+        -->
+        <SplitApp
+            id="splitApp"
+            defaultTransitionNameDetail="show"
+            defaultTransitionNameMaster="show" />
+    </Shell>
+
+</mvc:View>

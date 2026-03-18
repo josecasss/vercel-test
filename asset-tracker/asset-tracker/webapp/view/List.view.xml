@@ -1,0 +1,101 @@
+<mvc:View
+    controllerName="com.aibel.assettracking.controller.List"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <!--
+        Master page of the SplitApp.
+        Route target: masterPages aggregation (see manifest.json).
+    -->
+    <Page
+        id="listPage"
+        title="{i18n>masterTitle}">
+
+        <!-- ─── Sub-header: Barcode button | Search field | Sort button ─── -->
+        <subHeader>
+            <Bar>
+                <contentLeft>
+                    <Button
+                        icon="sap-icon://bar-code"
+                        tooltip="{i18n>btnScan}"
+                        press="onScanBarcode"
+                        type="Transparent" />
+                </contentLeft>
+                <contentMiddle>
+                    <SearchField
+                        id="searchField"
+                        placeholder="{i18n>searchPlaceholder}"
+                        search="onSearch"
+                        liveChange="onSearch"
+                        width="100%" />
+                </contentMiddle>
+                <contentRight>
+                    <Button
+                        icon="sap-icon://sort"
+                        tooltip="{i18n>btnSort}"
+                        press="onSort"
+                        type="Transparent" />
+                </contentRight>
+            </Bar>
+        </subHeader>
+
+        <!-- ─── Asset list (bound to /displayAssets) ─── -->
+        <List
+            id="assetList"
+            items="{/displayAssets}"
+            mode="None"
+            itemPress="onItemPress"
+            noDataText="{i18n>noDataText}"
+            growing="true"
+            growingThreshold="20"
+            growingScrollToLoad="true">
+
+            <ObjectListItem
+                title="{Description}"
+                type="Active">
+
+                <!-- First status: shows the scannable Asset Tag ID -->
+                <firstStatus>
+                    <ObjectStatus
+                        text="{Id}"
+                        icon="sap-icon://tag" />
+                </firstStatus>
+
+                <!-- Second status: shows the semantic status with color -->
+                <secondStatus>
+                    <ObjectStatus
+                        text="{StatusText}"
+                        state="{StatusState}" />
+                </secondStatus>
+
+                <!-- Attribute: Cost Center -->
+                <attributes>
+                    <ObjectAttribute
+                        title="{i18n>colCC}"
+                        text="{CostCenter}" />
+                </attributes>
+
+            </ObjectListItem>
+        </List>
+
+        <!-- ─── Footer: Export + Refresh ─── -->
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer />
+                <Button
+                    icon="sap-icon://excel-attachment"
+                    text="{i18n>btnExport}"
+                    press="onExport"
+                    type="Transparent" />
+                <Button
+                    icon="sap-icon://refresh"
+                    tooltip="{i18n>btnRefresh}"
+                    press="onRefresh"
+                    type="Transparent" />
+            </Toolbar>
+        </footer>
+
+    </Page>
+</mvc:View>

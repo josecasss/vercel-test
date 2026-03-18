@@ -1,0 +1,197 @@
+<mvc:View
+    controllerName="com.aibel.assettracking.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    displayBlock="true">
+
+    <!--
+        Detail page of the SplitApp.
+        Route target: detailPages aggregation (see manifest.json).
+        showNavButton="true" is visible on phone (hidden on desktop by SplitApp).
+    -->
+    <Page
+        id="detailPage"
+        title="{i18n>detailTitle}"
+        showNavButton="true"
+        navButtonPress="onNavBack">
+
+        <content>
+
+            <!-- ══════════════════════════════════════════════════════════
+                 EMPTY STATE  — shown when no asset is selected
+                 Expression binding: visible when hasSelectedAsset = false
+                 ══════════════════════════════════════════════════════════ -->
+            <VBox
+                visible="{= !${/hasSelectedAsset} }"
+                alignItems="Center"
+                class="sapUiLargeMarginTop">
+
+                <core:Icon
+                    src="sap-icon://inventory"
+                    size="4rem"
+                    color="sapNeutralColor" />
+
+                <Title
+                    text="{i18n>appTitle}"
+                    level="H2"
+                    textAlign="Center"
+                    class="sapUiSmallMarginTop" />
+
+                <Text
+                    text="{i18n>noAssetSelected}"
+                    textAlign="Center"
+                    class="sapUiSmallMarginTop sapUiSmallMarginBeginEnd" />
+
+            </VBox>
+
+            <!-- ══════════════════════════════════════════════════════════
+                 ASSET DETAIL CONTENT  — shown when hasSelectedAsset = true
+                 ══════════════════════════════════════════════════════════ -->
+            <VBox visible="{/hasSelectedAsset}">
+
+                <!-- ── Object Header ──────────────────────────────────── -->
+                <!--
+                    spec: Header — Title: Description, Subtitle: CostCenter
+                          Status Attribute: StatusText with StatusState
+                -->
+                <ObjectHeader
+                    responsive="true"
+                    condensed="false"
+                    title="{/selectedAsset/Description}"
+                    number="{/selectedAsset/Id}"
+                    numberUnit="{i18n>colAsset}">
+
+                    <attributes>
+                        <ObjectAttribute
+                            title="{i18n>lblAssetNo}"
+                            text="{/selectedAsset/MainAssetNumber}" />
+                        <ObjectAttribute
+                            title="{i18n>colCC}"
+                            text="{/selectedAsset/CostCenter}" />
+                        <ObjectAttribute
+                            title="{i18n>lblCompanyCode}"
+                            text="{/selectedAsset/CompanyCode}" />
+                    </attributes>
+
+                    <statuses>
+                        <ObjectStatus
+                            title="{i18n>colStatus}"
+                            text="{/selectedAsset/StatusText}"
+                            state="{/selectedAsset/StatusState}"
+                            inverted="true" />
+                    </statuses>
+
+                </ObjectHeader>
+
+                <!-- ── Section 1: General Information ────────────────── -->
+                <!--
+                    spec: Section 1 — Inventory Number, Serial Number,
+                                      Last Changed Date, User Updated
+                -->
+                <Panel
+                    headerText="{i18n>tabGeneral}"
+                    expandable="true"
+                    expanded="true"
+                    class="sapUiSmallMarginBeginEnd sapUiTinyMarginTop sapUiSmallMarginBottom">
+
+                    <layout:SimpleForm
+                        editable="false"
+                        layout="ResponsiveGridLayout"
+                        columnsL="2"
+                        columnsM="1"
+                        columnsXL="3"
+                        labelSpanL="5"
+                        labelSpanM="12"
+                        emptySpanL="0"
+                        class="sapUiSmallMarginTop">
+
+                        <layout:content>
+
+                            <Label text="{i18n>lblInventory}" />
+                            <Text text="{/selectedAsset/InventoryNo}" />
+
+                            <Label text="{i18n>lblSerial}" />
+                            <Text text="{/selectedAsset/SerialNumber}" />
+
+                            <Label text="{i18n>lblLastDate}" />
+                            <Text text="{/selectedAsset/LastCountedDateFormatted}" />
+
+                            <Label text="{i18n>lblUserUpdated}" />
+                            <Text text="{/selectedAsset/UserUpdated}" />
+
+                            <Label text="{i18n>lblSubNumber}" />
+                            <Text text="{/selectedAsset/SubNumber}" />
+
+                            <Label text="{i18n>lblAssetNo}" />
+                            <Text text="{/selectedAsset/MainAssetNumber}" />
+
+                        </layout:content>
+                    </layout:SimpleForm>
+                </Panel>
+
+                <!-- ── Section 2: Status Update ──────────────────────── -->
+                <!--
+                    spec: Section 2 — Previous Status (read-only), New Status (Select),
+                                      Confirm button → saves to ZASSET_STAT_TRAC,
+                                      updates LastCountedDate and UserUpdated
+                -->
+                <Panel
+                    headerText="{i18n>tabUpdate}"
+                    expandable="true"
+                    expanded="true"
+                    class="sapUiSmallMarginBeginEnd sapUiSmallMarginBottom">
+
+                    <VBox class="sapUiSmallMargin">
+
+                        <!-- Previous (current) status — read-only -->
+                        <HBox alignItems="Center" class="sapUiSmallMarginBottom">
+                            <Label
+                                text="{i18n>lblPrevStatus}"
+                                width="180px"
+                                class="sapUiSmallMarginEnd" />
+                            <ObjectStatus
+                                text="{/selectedAsset/StatusText}"
+                                state="{/selectedAsset/StatusState}" />
+                        </HBox>
+
+                        <!-- New status selection -->
+                        <HBox alignItems="Center" class="sapUiSmallMarginBottom">
+                            <Label
+                                text="{i18n>lblNewStatus}"
+                                width="180px"
+                                class="sapUiSmallMarginEnd"
+                                labelFor="statusSelect" />
+                            <Select
+                                id="statusSelect"
+                                items="{/StatusCodes}"
+                                forceSelection="false"
+                                selectedKey=""
+                                width="240px">
+                                <core:Item key="{Key}" text="{Key} – {Text}" />
+                            </Select>
+                        </HBox>
+
+                        <!-- Confirm button -->
+                        <!--
+                            TODO: Wire press to OData POST/PATCH
+                                  Entity: ZASSET_STAT_TRAC
+                                  Fields updated: StatusId, LastCountedDate (AEDAT), UserUpdated (AENAM)
+                        -->
+                        <Button
+                            text="{i18n>btnConfirm}"
+                            type="Emphasized"
+                            icon="sap-icon://accept"
+                            press="onConfirmStatus"
+                            class="sapUiSmallMarginTop" />
+
+                    </VBox>
+                </Panel>
+
+            </VBox>
+            <!-- end: hasSelectedAsset VBox -->
+
+        </content>
+    </Page>
+</mvc:View>
