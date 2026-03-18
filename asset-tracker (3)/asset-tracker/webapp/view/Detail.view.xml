@@ -1,0 +1,217 @@
+<mvc:View
+    controllerName="com.aibel.assettracking.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    displayBlock="true">
+
+    <f:DynamicPage id="detailPage" headerExpanded="true" fitContent="false">
+
+        <!-- ── Title ───────────────────────────────────────────────── -->
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <VBox>
+                        <Label text="{/selectedAsset/Id}" design="Standard" />
+                        <Title text="{/selectedAsset/Description}" level="H2" />
+                    </VBox>
+                </f:heading>
+                <f:snappedHeading>
+                    <HBox alignItems="Center">
+                        <VBox>
+                            <Label text="{/selectedAsset/Id}" design="Standard" />
+                            <Title text="{/selectedAsset/Description}" level="H4" />
+                        </VBox>
+                        <ObjectStatus
+                            text="{/selectedAsset/StatusText}"
+                            state="{/selectedAsset/StatusState}"
+                            inverted="true"
+                            class="sapUiSmallMarginBegin" />
+                    </HBox>
+                </f:snappedHeading>
+                <f:navigationActions>
+                    <Button
+                        icon="sap-icon://nav-back"
+                        tooltip="{i18n>btnBack}"
+                        press="onNavBack" />
+                </f:navigationActions>
+                <f:actions>
+                    <ObjectStatus
+                        title="{i18n>colStatus}"
+                        text="{/selectedAsset/StatusText}"
+                        state="{/selectedAsset/StatusState}"
+                        inverted="true" />
+                </f:actions>
+                <f:breadcrumbs>
+                    <Breadcrumbs>
+                        <Link text="{i18n>masterTitle}" press="onNavBack" />
+                    </Breadcrumbs>
+                </f:breadcrumbs>
+            </f:DynamicPageTitle>
+        </f:title>
+
+        <!-- ── Header: key identifier chips ────────────────────────── -->
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <HBox wrap="Wrap" class="sapUiSmallMarginBottom">
+                        <VBox class="sapUiSmallMarginEnd sapUiSmallMarginBottom">
+                            <Label text="{i18n>colAssetTag}" design="Bold" />
+                            <Text  text="{/selectedAsset/Id}" />
+                        </VBox>
+                        <VBox class="sapUiSmallMarginEnd sapUiSmallMarginBottom">
+                            <Label text="{i18n>lblAssetNo}" design="Bold" />
+                            <Text  text="{/selectedAsset/MainAssetNumber}" />
+                        </VBox>
+                        <VBox class="sapUiSmallMarginEnd sapUiSmallMarginBottom">
+                            <Label text="{i18n>lblSubNumber}" design="Bold" />
+                            <Text  text="{/selectedAsset/SubNumber}" />
+                        </VBox>
+                        <VBox class="sapUiSmallMarginEnd sapUiSmallMarginBottom">
+                            <Label text="{i18n>lblCompanyCode}" design="Bold" />
+                            <Text  text="{/selectedAsset/CompanyCode}" />
+                        </VBox>
+                        <VBox class="sapUiSmallMarginEnd sapUiSmallMarginBottom">
+                            <Label text="{i18n>lblCostCenter}" design="Bold" />
+                            <Text  text="{/selectedAsset/CostCenter}" />
+                        </VBox>
+                        <VBox class="sapUiSmallMarginEnd sapUiSmallMarginBottom">
+                            <Label text="{i18n>lblCreationDate}" design="Bold" />
+                            <Text  text="{/selectedAsset/CreationDateFmt}" />
+                        </VBox>
+                    </HBox>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+
+        <!-- ── Content ─────────────────────────────────────────────── -->
+        <f:content>
+
+            <!-- Empty state -->
+            <VBox
+                visible="{= !${/hasSelectedAsset} }"
+                alignItems="Center"
+                class="sapUiLargeMarginTop">
+                <core:Icon src="sap-icon://inventory" size="4rem" color="sapNeutralColor" />
+                <Title text="No Asset Selected" level="H3" class="sapUiSmallMarginTop" textAlign="Center" />
+                <Text text="{i18n>noAssetSelected}" textAlign="Center" class="sapUiSmallMarginTop" />
+            </VBox>
+
+            <!-- Detail sections -->
+            <VBox visible="{/hasSelectedAsset}">
+
+                <!-- ── Section 1: General Information ────────────── -->
+                <Panel
+                    headerText="{i18n>tabGeneral}"
+                    expandable="true"
+                    expanded="true"
+                    class="sapUiSmallMarginBeginEnd sapUiTinyMarginTop sapUiSmallMarginBottom">
+
+                    <layout:SimpleForm
+                        editable="false"
+                        layout="ResponsiveGridLayout"
+                        columnsL="3" columnsM="2" columnsXL="4"
+                        labelSpanL="5" labelSpanM="5"
+                        emptySpanL="0"
+                        class="sapUiSmallMarginTop">
+                        <layout:content>
+
+                            <Label text="{i18n>colAssetTag}" />
+                            <Text  text="{/selectedAsset/Id}" />
+
+                            <Label text="{i18n>lblAssetNo}" />
+                            <Text  text="{/selectedAsset/MainAssetNumber}" />
+
+                            <Label text="{i18n>lblSubNumber}" />
+                            <Text  text="{/selectedAsset/SubNumber}" />
+
+                            <Label text="{i18n>lblCompanyCode}" />
+                            <Text  text="{/selectedAsset/CompanyCode}" />
+
+                            <Label text="{i18n>lblCostCenter}" />
+                            <Text  text="{/selectedAsset/CostCenter}" />
+
+                            <Label text="{i18n>lblInventory}" />
+                            <Text  text="{/selectedAsset/InventoryNo}" />
+
+                            <Label text="{i18n>lblSerial}" />
+                            <Text  text="{/selectedAsset/SerialNumber}" />
+
+                            <Label text="{i18n>lblCreationDate}" />
+                            <Text  text="{/selectedAsset/CreationDateFmt}" />
+
+                        </layout:content>
+                    </layout:SimpleForm>
+                </Panel>
+
+                <!-- ── Section 2: Status & Tracking ──────────────── -->
+                <Panel
+                    headerText="{i18n>tabStatus}"
+                    expandable="true"
+                    expanded="true"
+                    class="sapUiSmallMarginBeginEnd sapUiSmallMarginBottom">
+
+                    <layout:SimpleForm
+                        editable="false"
+                        layout="ResponsiveGridLayout"
+                        columnsL="2" columnsM="1"
+                        labelSpanL="5" labelSpanM="5"
+                        emptySpanL="0"
+                        class="sapUiSmallMarginTop">
+                        <layout:content>
+
+                            <Label text="{i18n>colStatus}" />
+                            <ObjectStatus
+                                text="{/selectedAsset/StatusText}"
+                                state="{/selectedAsset/StatusState}"
+                                inverted="false" />
+
+                            <Label text="{i18n>lblLastDate}" />
+                            <Text  text="{/selectedAsset/LastCountedDateFmt}" />
+
+                            <Label text="{i18n>lblUserUpdated}" />
+                            <Text  text="{/selectedAsset/UserUpdated}" />
+
+                        </layout:content>
+                    </layout:SimpleForm>
+
+                    <!-- Status update action area -->
+                    <VBox class="sapUiSmallMargin">
+                        <Title text="{i18n>tabStatus}" level="H5" class="sapUiSmallMarginBottom" />
+
+                        <HBox alignItems="Center" wrap="Wrap">
+                            <VBox class="sapUiSmallMarginEnd sapUiSmallMarginBottom">
+                                <Label text="{i18n>lblNewStatus}" labelFor="detailStatusSelect" />
+                                <Select
+                                    id="detailStatusSelect"
+                                    items="{/StatusCodes}"
+                                    forceSelection="false"
+                                    selectedKey=""
+                                    width="240px">
+                                    <core:Item key="{Key}" text="{Key} – {Text}" />
+                                </Select>
+                            </VBox>
+                            <VBox class="sapUiSmallMarginBottom">
+                                <Label text="" />
+                                <Button
+                                    text="{i18n>btnConfirm}"
+                                    type="Emphasized"
+                                    icon="sap-icon://accept"
+                                    press="onConfirmStatus" />
+                            </VBox>
+                        </HBox>
+
+                        <!--
+                            TODO: Connect to OData PATCH → ZASSET_STAT_TRAC
+                                  Fields: StatusId, AEDAT (LastCountedDate), AENAM (UserUpdated)
+                        -->
+                    </VBox>
+                </Panel>
+
+            </VBox>
+
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>
